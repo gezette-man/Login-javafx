@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="720.0" prefWidth="1280.0"
+          style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="sample.Controller">
+    <children>
+        <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              style="-fx-background-color: white;">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inschrijven" textAlignment="CENTER"
+                      textOrigin="CENTER" wrappingWidth="190.07958984375">
+                    <font>
+                        <Font size="32.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="5.0"/>
+                    </VBox.margin>
+                </Text>
+                <Hyperlink onAction="#AccountClicked" text="Of heb je al een account?">
+                    <VBox.margin>
+                        <Insets bottom="40.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                </Hyperlink>
+                <TextField fx:id="mail2" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Mail ">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                </TextField>
+                <PasswordField fx:id="password1" minWidth="250.0" prefWidth="250.0" promptText="Wachtwoord">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                </PasswordField>
+                <PasswordField fx:id="password2" maxWidth="250.0" minWidth="250.0" promptText="Wachtwoord">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                </PasswordField>
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#CreateAccountClicked"
+                        text="Bevestigen">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </VBox.margin>
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                </Button>
+                <Label fx:id="status" prefHeight="94.0" prefWidth="250.0"/>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+            </padding>
+        </VBox>
+    </children>
+</FlowPane>
