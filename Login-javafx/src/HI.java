@@ -1,46 +1,86 @@
+import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class HI extends Application {
     private static final int height = 1400;
     private static final int width = 1400;
 
+    private double anchorX, anchorY;
+    private double anchorAngleX = 0;
+    private double anchorAngleY = 0;
+
+    private final DoubleProperty angleX = new SimpleDoubleProperty(0);
+    private final DoubleProperty angleY = new SimpleDoubleProperty(0);
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Box box = new Box(100, 100, 300);
+        ObjModelImporter importer = new ObjModelImporter();
+        importer.read("BMj.obj");
+        Node[] bmw = importer.getImport();
+        importer.close();
+        Group group = new Group(bmw);
 
-        Group group = new Group(box);
         Camera camera = new PerspectiveCamera();
-        Scene scene = new Scene(group, width, height, true, SceneAntialiasing.BALANCED);
+        Scene scene = new Scene(group, width, height, true, SceneAntialiasing.DISABLED);
         scene.setFill(Color.SILVER);
         scene.setCamera(camera);
 
-        box.translateXProperty().set(width / 2);
-        box.translateYProperty().set(height / 2);
+        group.translateXProperty().set(width / 2);
+        group.translateYProperty().set(height / 2);
+
 
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
                 case W:
-                    box.translateYProperty().set(box.getTranslateY() - 50);
+                    group.translateYProperty().set(group.getTranslateY() - 150);
                     break;
                 case S:
-                    box.translateYProperty().set(box.getTranslateY() + 50);
+                    group.translateYProperty().set(group.getTranslateY() + 150);
                     break;
                 case A:
-                    box.translateXProperty().set(box.getTranslateX() - 50);
+                    group.translateXProperty().set(group.getTranslateX() - 150);
                     break;
                 case D:
-                    box.translateXProperty().set(box.getTranslateX() + 50);
+                    group.translateXProperty().set(group.getTranslateX() + 150);
                     break;
             }
-
-
         });
+        Rotate xRotate;
+        Rotate yRotate;
+
+        group.getTransforms().addAll(
+                xRotate = new Rotate(0, Rotate.X_AXIS),
+                yRotate = new Rotate(0, Rotate.Y_AXIS)
+        );
+
+        xRotate.angleProperty().bind(angleX);
+        yRotate.angleProperty().bind(angleY);
+        scene.setOnMousePressed(event -> {
+            anchorX = event.getSceneX();
+            anchorY = event.getSceneY();
+            anchorAngleX = angleX.get();
+            anchorAngleY = angleY.get();
+        });
+        scene.setOnMouseDragged(event -> {
+
+            angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
+            angleY.set(anchorAngleY + anchorX - event.getSceneX());
+        });
+
+        primaryStage.addEventHandler(ScrollEvent.SCROLL, event -> {
+            double delta = event.getDeltaY();
+            group.translateZProperty().set(group.getTranslateZ() - delta);
+        });
+
         primaryStage.setScene(scene);
         primaryStage.show();
 
